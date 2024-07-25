@@ -16,3 +16,25 @@ jobs:
     - name: Run Bash script tests
       run: |
         chmod +x ./Script.sh &&  ./Script.sh
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Debug SSH connection
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+        chmod 600 private_key
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'SSH Connection Successful'"
+
+    - name: Copy files to VM
+      run: |
+        scp -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.PORT }} Script.sh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
+
+    - name: Run script on remote server
+      run: |
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'sh /home/ubuntu/Script.sh'
