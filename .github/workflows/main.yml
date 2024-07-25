@@ -15,4 +15,4 @@ jobs:
 
     - name: Run Bash script tests
       run: |
-        chmod +x ./my_script.sh &&  ./my_script.sh
+        chmod +x ./Script.sh &&  ./Script.sh
