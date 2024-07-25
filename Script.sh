@@ -1,41 +1,12 @@
 #!/bin/bash
 
-# Function to run tests
-run_tests() {
-  echo "Running tests..."
-  npm test
-  if [ $? -ne 0 ]; then
-    echo "Tests failed."
-    exit 1
-  fi
-  echo "Tests passed."
-}
+echo "Running automation..." > ./output_log.txt
 
-# Function to build the application
-build_application() {
-  echo "Building application..."
-  npm run build
-  if [ $? -ne 0 ]; then
-    echo "Build failed."
-    exit 1
-  fi
-  echo "Build succeeded."
-}
+echo "" >> ./output_log.txt
+echo "Checking uptime..." >> ./output_log.txt
+echo $(uptime) >> ./output_log.txt
 
-# Function to deploy the application
-deploy_application() {
-  echo "Deploying application..."
-  # Add your deployment commands here. Example:
-  # scp -r ./build user@yourserver:/path/to/deploy
-  # ssh user@yourserver 'systemctl restart yourapp'
-  echo "Deployment complete."
-}
-
-# Main script
-echo "Starting Continuous Deployment and Integration..."
-
-run_tests
-build_application
-deploy_application
+echo "THIS IS MY UPDATED SCRIPT" >> ./output_log.txt
+echo "THIS IS MY NEW CODE" >> ./output_log.txtn
 
 echo "CDCI process completed successfully."
